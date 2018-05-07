@@ -1,0 +1,20 @@
+
+body { 
+	padding-top: 70px;
+	color: white;
+
+    background-color: #2d2d2d;
+}
+
+form {
+	color: black;
+}
+
+a {
+	color: white;
+}
+
+a:hover {
+	color: #4fdbff;
+}
+
