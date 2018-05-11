@@ -9,14 +9,11 @@
 		echo '<a href="newarticle.php">>>new article</a>';
 	}
 	?>
-
 <br>
-
 	<?php
 		include_once "includes/articles.inc.php";
 	?>
 </div>
-
 </body>
 <?php
 	include_once "partials/footer.php";

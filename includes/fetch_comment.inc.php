@@ -2,7 +2,7 @@
 
 include_once "time.inc.php";
 
-$connect = new PDO('host;dbname=dbname', 'username', 'pw');
+$connect = new PDO('mysql:host=db735578055.db.1and1.com;dbname=db735578055', 'dbo735578055', 'cqJ%3+^Dn3n@WQ34yPfr*#Tj^=X^K7kk');
 
 $img = $_POST['img'];
 

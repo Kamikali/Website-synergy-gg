@@ -1,6 +1,8 @@
 <?php
 	include_once "partials/header.php";
 	include_once "partials/navbar.php";
+
+	if(isset($_GET['loginrequest']))$error = $_GET['loginrequest'];
 ?>
 <body>
 
@@ -8,6 +10,14 @@
 
 <h2><b>LOGIN</b></h2>
 <br>
+
+	<?php
+		switch($error){
+			case 'like':
+			echo "<p style='color:yellow;'>You have to be logged in if you want to like/dislike posts!<br><br></p>";
+			break;
+		}
+	?>
 
 	<form class="form-horizontal" action="includes/login.inc.php" method="POST">
 		<div class="form-group">
