@@ -10,6 +10,16 @@
 
 <div class="container">
 
+<style>
+	button {
+		background:none;
+		border:none;
+		color:white;
+	}
+	button:hover {
+		color: #4fdbff;
+	}
+</style>
 
 	<?php
 			$img = $_GET['img'];
@@ -41,13 +51,29 @@
 
 
 				//GET DATA TO CREATE INFO BAR UNDER UPLOAD
-				$likes = "SELECT * FROM likes WHERE post_id = '$img' AND isLike = 1";
+				$likes = "SELECT isLike FROM likes WHERE post_id = '$img' AND isLike = 1";
 				$resultLikes = mysqli_query($conn, $likes);
 				$numLikes = mysqli_num_rows($resultLikes);
 
-				$unlikes = "SELECT * FROM likes WHERE post_id = '$img' AND isLike = 0";
+				$unlikes = "SELECT isLike FROM likes WHERE post_id = '$img' AND isLike = 0";
 				$resultUnlikes = mysqli_query($conn, $unlikes);
 				$numUnlikes = mysqli_num_rows($resultUnlikes);
+
+				$uid = $_SESSION['u_id'];
+				$colour = '';
+				$isLiked = "SELECT isLike FROM likes WHERE user_id = '$uid' AND post_id = '$img'";
+				$result = mysqli_query($conn, $isLiked);
+				if(mysqli_num_rows($result) == 0){
+					$colour = '#ffffff';
+				} else {
+					while($row2 = mysqli_fetch_assoc($result)) {
+						if($row2['isLike'] == 0){
+							$colour = '#707070';
+						} else {
+							$colour = '#4fdbff';
+						}
+					}
+				}
 
 				$upload_benis = $numLikes - $numUnlikes;
 				 
@@ -100,12 +126,12 @@
 					}
 				echo '</li><li>';
 				echo "<ul style='list-style-type: none;'>
-						<li style='float:left;margin-left:-15px;margin-top:-70px;' id='benis-display'><h1><span class='jqValue'>...</span></h1></li>
+						<li style='float:left;margin-left:-15px;margin-top:-70px;' id='benis-display'><h1 style='color:".$colour.";'><span class='jqValue'>...</span></h1></li>
 						<!-- LIKEBAR -->	
 							<li style='float:left;margin-left:-15px;margin-top:-20px;'>				
 								<svg width='70' height='5'>
 									<rect x='0' y='0' width='70' height='5' style='fill:rgb(90,90,90)' />
-									<rect x='0' y='0' width='".$likeBarWidth."' height='5' style='fill:rgb(156,220,256)' />
+									<rect x='0' y='0' width='".$likeBarWidth."' height='5' style='fill:rgb(79, 219, 255)' />
 									<rect x='0' y='0' width='70' height='5' fill-opacity='0' style='stroke-width:2;stroke:rgb(20,20,20)' />
 								</svg>
 							</li>

@@ -23,9 +23,3 @@
       $country = $geo[geoplugin_countryCode];
     ?>
 </head>
-
-<?php
-function error(){
-  echo "test!!!";
-}
-?>

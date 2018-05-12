@@ -28,10 +28,25 @@ CREATE TABLE `posts` (
   `ispic` bit(1) NOT NULL
 )
 
+DROP TABLE IF EXISTS tbl_comment;
 CREATE TABLE tbl_comment (
-  comment_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    comment_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     parent_comment_id INT(11) NOT NULL,
     comment VARCHAR(200) NOT NULL,
     comment_sender_name VARCHAR(40) NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
+DROP TABLE IF EXISTS likes;
+CREATE TABLE likes (
+  post_id INT(11) NOT NULL,
+  user_id VARCHAR(16) NOT NULL,
+  isLike BIT(1)
+)
+
+DROP TABLE IF EXISTS comment_likes;
+CREATE TABLE comment_likes (
+  post_id INT(11) NOT NULL,
+  user_id VARCHAR(16) NOT NULL,
+  isLike BIT(1)
 )

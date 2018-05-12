@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span> 
       </button>
-      <a class="navbar-brand" href="index.php"><img style="max-height:30px;margin-top:-4px" src="assets/img/syn_logo.png"></a>
+      <a class="navbar-brand" href="index.php"><img style="max-height:26px;margin-top:-2px" src="assets/img/syn_logo.png"></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
