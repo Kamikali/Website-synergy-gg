@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span> 
       </button>
-      <a class="navbar-brand" href="index.php"><img style="max-height:26px;margin-top:-2px" src="assets/img/syn_logo.png"></a>
+      <a class="navbar-brand" href="/"><img style="max-height:26px;margin-top:-2px" src="assets/img/syn_logo.png"></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -22,10 +22,16 @@
       <ul class="nav navbar-nav navbar-right">
       <?php
         if(isset($_SESSION['u_id'])){
+          include_once 'includes/dbh.inc.php';
+          $uid = $_SESSION['u_id'];
+          $u_coins = 0;
+          $coin_result = mysqli_query($conn, "SELECT SUM(coins) AS value_coins FROM users WHERE uid = '$uid'");
+          $coin_row = mysqli_fetch_assoc($coin_result);
+          $u_coins += $coin_row['value_coins'];
           echo '<li><a href="user.php?user='.$_SESSION['u_uid'].'">'.$_SESSION['u_uid'].'</a></li>';
-          echo '<li><a href="" data-toggle="tooltip" data-placement="bottom" title="Your Olwycoins"><img style="margin-top:-5px;height:16px;width:16px;" src="assets/img/icons/owlcoin.png"> 0</a></li>';
-          echo '<li><a href="" data-toggle="tooltip" data-placement="bottom" title="Notifications"><span class="glyphicon glyphicon-envelope"></span> 0</a></li>';
-          echo '<li><a href="" data-toggle="tooltip" data-placement="bottom" title="Settings"><span class="glyphicon glyphicon-cog"></span></a></li>';
+          echo '<li><a href="" data-toggle="tooltip" data-placement="bottom" title="Your Owlycoins"><img style="margin-top:-5px;height:16px;width:16px;" src="assets/img/icons/owlcoin.png"> '.$u_coins.'</a></li>';
+          //echo '<li><a href="" data-toggle="tooltip" data-placement="bottom" title="Notifications"><span class="glyphicon glyphicon-envelope"></span> 0</a></li>';
+          echo '<li><a href="settings.php" data-toggle="tooltip" data-placement="bottom" title="Settings"><span class="glyphicon glyphicon-cog"></span></a></li>';
 
         } else {
           echo '<li><form action="signup.php">

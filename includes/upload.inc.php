@@ -10,8 +10,10 @@ if(isset($_POST['submit'])){
    		die("Connection failed: " . mysqli_connect_error());
 	}
 
+
 	$title = mysqli_real_escape_string($conn, $_POST['title']);
 	$message = mysqli_real_escape_string($conn, $_POST['message']);
+	$showOnFrontpage = $_POST['frontpage'];
 
 	$file = $_FILES['file'];
 
@@ -75,8 +77,10 @@ if(isset($_POST['submit'])){
 						$upload_user_id = $_SESSION['u_id'];
 						$upload_user_uid = $_SESSION['u_uid'];
 						$country = $_SESSION['u_countryid'];
-						$sql = "INSERT INTO posts(title, message, path, thumbnail_path, user_id, user_uid, country, nsfwl, date, upvotes, downvotes, ispic)    
-								VALUES ('$title', '$message', '$fileDestination', '$thumbnailDirection', '$upload_user_id', '$upload_user_uid', '$country', 'sfw', NOW(), 0, 0, '$isPic')";
+
+
+						$sql = "INSERT INTO posts(title, message, path, thumbnail_path, user_id, user_uid, country, nsfwl, date, ispic, coins, showOnFrontpage)    
+								VALUES ('$title', '$message', '$fileDestination', '$thumbnailDirection', '$upload_user_id', '$upload_user_uid', '$country', 'sfw', NOW(), '$isPic', 0, '$showOnFrontpage')";
 						mysqli_query($conn, $sql);
 						//head back to main page
 						header("Location: ../news.php?=uploadsuccess");

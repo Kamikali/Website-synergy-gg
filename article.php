@@ -3,6 +3,8 @@
 	include_once "partials/navbar.php";
 	include_once 'includes/dbh.inc.php';
 	include_once 'includes/time.inc.php';
+	include_once 'includes/userstats.inc.php';
+	include_once 'includes/setEmojis.inc.php';
 ?>
 <body>
 
@@ -28,20 +30,19 @@
 
 			while ($row = mysqli_fetch_assoc($result)){
 				$uploadTime = time_elapsed_string($row['date']);
-				echo "<h2>".$row['title']."</h2>";
 				if($row['ispic']){ //IS IMAGE
 					?>
 					<div align="center">
 					<?php
-					echo "<br><img style='cursor: pointer;max-height:500px;max-width: 100%;' src=".$row["path"]." onclick='goBack()'><br>";
+					echo "<br><img style='cursor: pointer;max-height:500px;max-width: 100%;' src='http://www.img.synergy.gg/".$row["path"]."' onclick='goBack()'><br>";
 					?></div><?php
 				} else {				 //IS VIDEO
 										 //CREATE CUSTOM VIDEO PLAYER <-- doesnt work yet
 						?>
 						<div align="center">
 						    <video id="video" autoplay controls loop style='cursor:pointer;max-height:500px;max-width:100%;' onclick='goBack()'>
-						    	<source src='<?php echo $row["path"];?>' type="video/mp4">
-						    	<source src='<?php echo $row["path"];?>' type="video/m4v">
+						    	<source src='http://www.vid.synergy.gg/<?php echo $row["path"];?>' type="video/mp4">
+						    	<source src='http://www.vid.synergy.gg/<?php echo $row["path"];?>' type="video/m4v">
 						    	Your browser does not support HTML5 video ¯\_(ツ)_/¯
 						    </video>
 						</div>			
@@ -75,6 +76,11 @@
 					}
 				}
 
+				//GET COLOUR FOR DESCRIPTION
+				$roleColour_id = $row['user_id'];
+				$roleColour_row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT role FROM users WHERE uid = '$roleColour_id'"));
+				$roleColour = selectColour($roleColour_row['role']);
+
 				$upload_benis = $numLikes - $numUnlikes;
 				 
 				if($numLikes + $numUnlikes != 0){
@@ -83,13 +89,16 @@
 					$likeBarWidth = 70;
 				}
 
+				//ROLES THAT ARE ALLOWED TO DELETE POSTS
+				$allowedRoles = array("Moderator", "Administrator");
 
+				echo "<h2>".setEmojis($row['title'], 32, -6)."</h2>";
 				echo '<div class="row">';
-				echo '<div class="col-sm-2">';
+				echo '<div class="col-sm-8">';
 				echo "<ul style='list-style-type: none;><li style='float: left'>";
 				if(isset($_SESSION['u_id'])){ //LIKE BUTTONS FOR USERS WHO ARE LOGGED IN
 						echo   "<ul style='list-style-type: none;'>
-									<li id='plus' style='margin-left:-70px;margin-top:20px;'>
+									<li id='plus' style='margin-left:-85px;margin-top:20px;'>
 										<!-- LIKE BUTTON -->
 										<form method='post' id='likeform'>
 											<input type='hidden' id='img' value='".$img."'>
@@ -97,7 +106,7 @@
 											<button id='likebtn' type='submit'>&#x25B2</button>
 										</form>
 									</li>
-									<li id='minus' style='margin-left:-70px;'>
+									<li id='minus' style='margin-left:-85px;'>
 										<!-- DISLIKE BUTTON -->
 										<form method='post' id='dislikeform'>
 											<input type='hidden' id='img' value='".$img."'>
@@ -108,14 +117,14 @@
 								</ul>";
 					} else {
 							echo   "<ul style='list-style-type: none;'>
-								<li id='plus' style='margin-left:-70px;margin-top:20px;'>
+								<li id='plus' style='margin-left:-85px;margin-top:20px;'>
 									<!-- LIKE BUTTON -->
 									<form action='login.php' method='get'>
 										<input type='hidden' name='loginrequest' value='like'>
 										<button id='likebtn' type='submit'>&#x25B2</button>
 									</form>
 								</li>
-								<li id='minus' style='margin-left:-70px;'>
+								<li id='minus' style='margin-left:-85px;'>
 									<!-- DISLIKE BUTTON -->
 									<form action='login.php' method='get'>
 									    <input type='hidden' name='loginrequest' value='like'>
@@ -126,23 +135,28 @@
 					}
 				echo '</li><li>';
 				echo "<ul style='list-style-type: none;'>
-						<li style='float:left;margin-left:-15px;margin-top:-70px;' id='benis-display'><h1 style='color:".$colour.";'><span class='jqValue'>...</span></h1></li>
+						<li style='float:left;margin-left:-55px;margin-top:-70px;' id='benis-display'><h1 style='color:".$colour.";'><span class='jqValue'>...</span></h1></li>
 						<!-- LIKEBAR -->	
-							<li style='float:left;margin-left:-15px;margin-top:-20px;'>				
+							<li style='float:left;margin-left:-55px;margin-top:-20px;'>				
 								<svg width='70' height='5'>
 									<rect x='0' y='0' width='70' height='5' style='fill:rgb(90,90,90)' />
 									<rect x='0' y='0' width='".$likeBarWidth."' height='5' style='fill:rgb(79, 219, 255)' />
 									<rect x='0' y='0' width='70' height='5' fill-opacity='0' style='stroke-width:2;stroke:rgb(20,20,20)' />
 								</svg>
-							</li>
-						</li>
-					</ul>";
-				echo '</div>';
-				echo '<div class="col-sm-10">';
-				echo '<blockquote style="border-color:#cdcdcd;">
-				    <p>'.$row['message'].'</p>
-				    <footer style="color:white;"><i>'.$uploadTime.' by <img style="width:20px;height:18px;margin-top:-2px;" src="assets/img/flags/'.$row['country'].'.png"><a href="/user.php?user='.$row['user_uid'].'"></i><b>'.$row['user_uid'].'</b></a></footer>
-				</blockquote>';
+							</li>";
+
+				echo"</li></ul>";
+				echo '<li style="margin-top:-50px;margin-left:75px;">
+				    <footer style="color:white;"><i>'.$uploadTime.' by <img style="width:20px;height:18px;margin-top:-2px;" src="http://www.flag.synergy.gg/'.$row['country'].'.png"><a style="color:'.$roleColour.';" href="/user.php?user='.$row['user_uid'].'"></i><b>'.$row['user_uid'].'</b></a>
+				    ';
+                	if(in_array($_SESSION["u_urole"], $allowedRoles)){
+                echo '<form method="post" action="includes/delete.inc.php">
+	                      <input type="hidden" name="articleNumber" value="'.$img.'">
+	                      <input type="hidden" name="toDel" value="post">
+	                      <button style="float:right;" name="submit" type="submit">Delete</button>
+                     </form>';
+                	}
+				echo '</footer><p>'.setEmojis($row['message']).'</p></li>';
 				echo '</div></div>';
 				echo '</ul></li>';
 			}

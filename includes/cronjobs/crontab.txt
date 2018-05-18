@@ -1,0 +1,4 @@
+0,6,12,18,24,30,36,42,48,54 * * * * /usr/bin/php7.1 /kunden/homepages/40/d735392073/htdocs/alpha/synergygg/includes/cronjobs/comment_coinupdate.cronjob.php
+2,8,14,20,26,32,38,44,50,56 * * * * /usr/bin/php7.1 /kunden/homepages/40/d735392073/htdocs/alpha/synergygg/includes/cronjobs/post_coinupdate.cronjob.php
+4,10,16,22,28,34,40,46,52,58 * * * * /usr/bin/php7.1 /kunden/homepages/40/d735392073/htdocs/alpha/synergygg/includes/cronjobs/user_coinupdate.cronjob.php
+*/5 * * * * /usr/bin/php7.1 /kunden/homepages/40/d735392073/htdocs/alpha/synergygg/includes/cronjobs/user_roleupdate.cronjob.php

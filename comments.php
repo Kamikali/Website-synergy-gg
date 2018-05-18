@@ -1,10 +1,11 @@
-
+  
   <br />
    <form method="POST" id="comment_form">
     <div class="form-group">
       <div class="row">
         <div class="col-sm-8">
-          <textarea name="comment_content" rows="2" style="resize: vertical;max-height: 300px;min-height:40px" id="comment_content" class="form-control" placeholder="Enter Comment" rows="5"></textarea>
+          <textarea onkeyup="showHint(this.value)" name="comment_content" rows="2" style="resize: vertical;max-height: 300px;min-height:40px" id="comment_content" class="form-control" placeholder="Enter Comment" rows="5"></textarea>
+          <p><span style="color:white;" id="txtHint"></span></p>
         </div>
       </div>
      
@@ -17,7 +18,7 @@
    </form>
    <span id="comment_message"></span>
    <br />
-   <div id="display_comment"></div>
+   <div style="margin-left:20px;" id="display_comment"></div>
 
 
 <script>
@@ -66,4 +67,35 @@ $(document).ready(function(){
  });
  
 });
+
+
+function showHint(str) {
+    if (str.length == 0) { 
+        document.getElementById("txtHint").innerHTML = "";
+        return;
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("txtHint").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "includes/emojiHint.inc.php?q=" + lastWord(str), true);
+        xmlhttp.send();
+    }
+}
+
+function lastWord(words) {
+    var n = words.split(" ");
+    return n[n.length - 1];
+}
+
+
+function jsFunction(myMessage) {
+  var str = $('#comment_content').val();
+  var lastIndex = str.lastIndexOf(" ");
+  str = str.substring(0, lastIndex) + " " + myMessage + " ";
+  $('#comment_content').val(str);
+  $('#comment_content').focus();
+}
 </script>

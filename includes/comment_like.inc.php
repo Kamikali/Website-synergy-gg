@@ -18,8 +18,9 @@ if(isset($_POST['action']) && isset($_POST['uid']) && isset($_POST['img']) && !e
 
 
 function addLike($conn, $img, $uid, $like) {
+	$points = 'Points';
 	$colour = '';
-		$sql = "SELECT isLike FROM comment_likes WHERE user_id = '$uid' AND post_id = '$img'";
+		$sql = "SELECT isLike FROM comment_likes WHERE user_id = '$uid' AND comment_id = '$img'";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) == 0){
 			$sql = "INSERT INTO comment_likes VALUES ('$img', '$uid', '$like')";
@@ -28,25 +29,29 @@ function addLike($conn, $img, $uid, $like) {
 		} else {
 			while($row = mysqli_fetch_assoc($result)) {
 				if($row['isLike'] == 1){
-					$sql = "DELETE FROM comment_likes WHERE user_id = '$uid' AND post_id = '$img'";
+					$sql = "DELETE FROM comment_likes WHERE user_id = '$uid' AND comment_id = '$img'";
 					$result = mysqli_query($conn, $sql);
 					$colour = '#ffffff';
 				} else {
-					$sql = "UPDATE comment_likes SET isLike= true WHERE user_id = '$uid' AND post_id = '$img'";
+					$sql = "UPDATE comment_likes SET isLike= true WHERE user_id = '$uid' AND comment_id = '$img'";
 					$result = mysqli_query($conn, $sql);
 					$colour = '#4fdbff';
 				}
 			}			
 		}
 		//GET UPLOAD BENIS
-		echo "<i style='color:".$colour.";'>".(mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE post_id = '$img' AND isLike = 1"))
-			 - mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE post_id = '$img' AND isLike = 0")))."</i>";
+		$likes = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE comment_id = '$img' AND isLike = 1"))
+			   - mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE comment_id = '$img' AND isLike = 0"));
+		if($likes == 1 || $likes == -1){
+			$points = 'Point';
+		}
+		echo "<i style='color:".$colour.";'>".$likes." ".$points."</i>";
 }
 
 function addDislike($conn, $img, $uid, $like) {
-		//echo "<script>alert('".$img."')</script>";
+		$points = 'Points';
 		$colour = '';
-		$sql = "SELECT isLike FROM comment_likes WHERE user_id = '$uid' AND post_id = '$img'";
+		$sql = "SELECT isLike FROM comment_likes WHERE user_id = '$uid' AND comment_id = '$img'";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) == 0){
 			$sql = "INSERT INTO comment_likes VALUES ('$img', '$uid', '$like')";
@@ -55,17 +60,21 @@ function addDislike($conn, $img, $uid, $like) {
 		} else {
 			while($row = mysqli_fetch_assoc($result)) {
 				if($row['isLike'] == 0){
-					$sql = "DELETE FROM comment_likes WHERE user_id = '$uid' AND post_id = '$img'";
+					$sql = "DELETE FROM comment_likes WHERE user_id = '$uid' AND comment_id = '$img'";
 					$result = mysqli_query($conn, $sql);
 					$colour = '#ffffff';
 				} else {
-					$sql = "UPDATE comment_likes SET isLike= false WHERE user_id = '$uid' AND post_id = '$img'";
+					$sql = "UPDATE comment_likes SET isLike= false WHERE user_id = '$uid' AND comment_id = '$img'";
 					$result = mysqli_query($conn, $sql);
 					$colour = '#707070';
 				}
 			}
 		}
 	//GET UPLOAD BENIS
-	echo "<i style='color:".$colour.";'>".(mysqli_num_rows(mysqli_query($conn, "SELECT isLike FROM comment_likes WHERE post_id = '$img' AND isLike = 1"))
-		 - mysqli_num_rows(mysqli_query($conn, "SELECT isLike FROM comment_likes WHERE post_id = '$img' AND isLike = 0")))."</i>";
+	$likes = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE comment_id = '$img' AND isLike = 1"))
+		   - mysqli_num_rows(mysqli_query($conn, "SELECT * FROM comment_likes WHERE comment_id = '$img' AND isLike = 0"));
+	if($likes == 1 || $likes == -1){
+		$points = 'Point';
+	}
+	echo "<i style='color:".$colour.";'>".$likes." ".$points."</i>";
 }

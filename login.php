@@ -14,7 +14,16 @@
 	<?php
 		switch($error){
 			case 'like':
-			echo "<p style='color:yellow;'>You have to be logged in if you want to like/dislike posts!<br><br></p>";
+			echo "<p style='color:yellow;'>You have to be logged in if you want to like posts or comments!<br><br></p>";
+			break;
+			case 'cannot-login':
+			echo "<p style='color:yellow;'>Please fill out the whole form.<br><br></p>";
+			break;
+			case 'invalid_user':
+			echo "<p style='color:yellow;'>Can not login with the given data!<br>The user does not exist!<br><br></p>";
+			break;
+			case 'invalid_pw':
+			echo "<p style='color:yellow;'>Can not login with the given data!<br>The password is wrong.<br><br></p>";
 			break;
 		}
 	?>

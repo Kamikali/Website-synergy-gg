@@ -46,7 +46,15 @@ CREATE TABLE likes (
 
 DROP TABLE IF EXISTS comment_likes;
 CREATE TABLE comment_likes (
-  post_id INT(11) NOT NULL,
+  comment_id INT(11) NOT NULL,
   user_id VARCHAR(16) NOT NULL,
   isLike BIT(1)
+)
+
+DROP TABLE IF EXISTS awards;
+CREATE TABLE awards (
+    uid INT(11) NOT NULL,
+    award_name VARCHAR(20),
+    award_description VARCHAR(50),
+    achieved TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )

@@ -15,21 +15,21 @@ if(isset($_POST['submit'])){
 	//Error handlers
 	//Check if the inputs are empty
 	if(empty($uid) || empty($pwd)){
-		header("Location: ../index.php?login=cannnot-login");
+		header("Location: ../login.php?loginrequest=cannot-login");
 		exit();
 	} else {
 		$sql = "SELECT * FROM users WHERE name='$uid' OR email='$uid'";
 		$result = mysqli_query($conn, $sql);
 		$resultCheck = mysqli_num_rows($result);	
 		if($resultCheck < 1){
-			header("Location: ../index.php?login=error");
+			header("Location: ../login.php?loginrequest=invalid_user");
 			exit();
 		} else {
 			if ($row = mysqli_fetch_assoc($result)){
 				//Dehashing the password
 				$hashedPwdCheck = password_verify($pwd, $row['password']);
 				if($hashedPwdCheck == false) {
-					header("Location: ../index.php?login=error");
+					header("Location: ../login.php?loginrequest=invalid_pw");
 					exit();
 				} elseif ($hashedPwdCheck == true) {
 					//log in the user here
@@ -46,6 +46,6 @@ if(isset($_POST['submit'])){
 	}
 
 } else {
-	header("Location: ../index.php?login=エラー");
+	header("Location: ../login.php?login=cannot-login");
 	exit();
 }

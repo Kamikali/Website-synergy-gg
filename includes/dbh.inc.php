@@ -2,7 +2,7 @@
 
 $dbServerName = "db735578055.db.1and1.com";
 $dbUserName = "dbo735578055";
-$dbPassword = "cqJ%3+^Dn3n@WQ34yPfr*#Tj^=X^K7kk";
+$dbPassword = "ZS<Sn}IY7oDCSPsB";
 $dbName = "db735578055";
 /*
 $dbServerName = "localhost";

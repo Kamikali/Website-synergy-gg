@@ -1,6 +1,5 @@
 <?php
   session_start();
-  
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -10,6 +9,7 @@
    	<meta name="viewport" content="width=device-width, initial-scale=1">
    	<!-- Site icon -->
    	<link rel="icon" href="assets/img/icons/owlicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icons/owlicon.png">
    	<!-- Stylesheets -->
    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/main.css">

@@ -2,6 +2,7 @@
 session_start();
 
 include_once "dbh.inc.php"; //include for msqli_real_escape_string idk this is really bad i gotta change this
+$connect = new PDO('mysql:host=db735578055.db.1and1.com;dbname=db735578055', 'dbo735578055', 'ZS<Sn}IY7oDCSPsB');
 
 $error = '';
 $comment_name = '';
@@ -48,7 +49,7 @@ if($error == '')
    ':post_id' => $post_id
   )
  );
- $error = '<label class="text-success">Comment Added</label>';
+ $error = '<label class="text-success">'.$comment_content.'</label>';
 }
 
 $data = array(

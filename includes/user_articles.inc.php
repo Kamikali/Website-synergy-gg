@@ -4,13 +4,13 @@ include_once "dbh.inc.php";
 include_once 'includes/time.inc.php';
 include_once 'userstats.inc.php';
 
-$sql = "SELECT uid, title, user_uid, country, date, thumbnail_path, ispic, coins FROM posts WHERE visible = 1 ORDER BY uid DESC";
-	$result = mysqli_query($conn, $sql);
+$sql = "SELECT uid, title, user_uid, country, date, thumbnail_path, ispic, coins, visible FROM posts WHERE user_id = '$uid' AND visible = 1 ORDER BY uid DESC";
+  $result = mysqli_query($conn, $sql);
 
   if (mysqli_num_rows($result) > 0) {
-  	 // output data of each row
-   	$counter = 0;
-   	while($row = mysqli_fetch_assoc($result)) {
+     // output data of each row
+    $counter = 0;
+    while($row = mysqli_fetch_assoc($result)) {
       $title = strlen($row['title']) > 20 ? substr($row['title'],0,20)."..." : $row['title'];
 
       $roleColour_id = $row['user_uid'];
@@ -18,14 +18,14 @@ $sql = "SELECT uid, title, user_uid, country, date, thumbnail_path, ispic, coins
       $roleColour = selectColour($roleColour_row['role']);
 
       if($row['coins'] >= 0){
-        $score = 'Upvotes: ';
+        $score = '&#x25B2 ';
       } else {
-        $score = 'Downvotes: ';
+        $score = '&#x25BC ';
       }
       $score .= $row['coins'];
 
-      echo '        <div class="col-sm-3" style="font-size:13px;">
-                         <div class="panel panel-default">
+      echo '        <div class="col-sm-3">
+                         <div class="panel panel-default" style="font-size:13px;">
                             <div class="panel-heading panel-heading-custom">';
                               echo "<a href='article.php?img=".$row["uid"]."'><h3 class='panel-title'>".$title."</h3></a>";
                             echo '</div>
@@ -43,16 +43,12 @@ $sql = "SELECT uid, title, user_uid, country, date, thumbnail_path, ispic, coins
                           </div>
                         </div>';
 
-      
-   		
-        
+        }
+      } else {
+        echo "This user has nothing uploaded yet.";
+      }
 
-  		  }
-		  } else {
-        echo "There are no articles posted yet.";
-			}
-
-	mysqli_close($conn);
+  mysqli_close($conn);
 
 ?>
 <style>
